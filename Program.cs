@@ -1,7 +1,13 @@
+using KornikTournament.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<ApplicationContext>(o 
+    => o.UseNpgsql(builder.Configuration.GetConnectionString("DbString")));
 
 var app = builder.Build();
 

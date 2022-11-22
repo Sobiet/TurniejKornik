@@ -1,8 +1,63 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model RegisterTeamModel
+
+@{
+    ViewData["Title"] = "Rejestracja Zespołu";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center w-50" id="container">
+    <h1>Stwórz swoją drużyne!</h1>
+    
+    <p>Po stworzeniu zespołu, zostaniesz przekierowany na panel zarządzania drużyną, dodasz tam swoich kolegów</p>
+    
+    <form asp-action="CreateTeam" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            
+            <label class="control-label">Nazwa Zespołu</label>
+            <input asp-for="Name" class="form-control"/>
+            <span asp-validation-for="Tag" Title="text-danger"></span>
+            
+            <label asp-for="Tag" class="control-label">Tag zespołu</label>
+            <input asp-for="Tag" class="form-control" maxlength="4"/>
+            <span asp-validation-for="Tag" class="text-danger"></span>
+
+            <label class="control-label">Imie zakładającego zespół</label>
+            <input asp-for="LeaderName" class="form-control" />
+            <span asp-validation-for="LeaderName" class="text-danger"></span>
+
+            <label class="control-label">Nazwisko zakładającego zespół</label>
+            <input asp-for="LeaderSurname" class="form-control" />
+            <span asp-validation-for="LeaderSurname" class="text-danger"></span>
+
+            <label class="control-label">Nickname zakładającego zespół</label>
+            <input asp-for="LeaderNickname" class="form-control" />
+            <span asp-validation-for="LeaderNickname" class="text-danger"></span>
+            
+            <label class="control-label">Klasa w której jest zakładający zespółu</label>
+            <input asp-for="LeaderClass" class="form-control" placeholder="format: np. 4i1" maxlength="4"/>
+            <span asp-validation-for="LeaderClass" class="text-danger"></span>
+            
+            <label class="control-label">Rola zakładającego zespół</label>
+            <select asp-for="Role">
+                <option>Top</option>
+                <option>Jg</option>
+                <option>Mid</option>
+                <option>Adc</option>
+                <option>Support</option>
+            </select>
+            
+            <label class="control-label">Hasło zakładającego zespół (postaraj się nie zapomnieć)</label>
+            <input asp-for="Password" class="form-control" type="password"/>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Załóż" class="btn btn-primary" />
+        </div>
+    </form>
 </div>
+
+<style>
+    #container {
+        margin: 0 auto;
+    }
+</style>

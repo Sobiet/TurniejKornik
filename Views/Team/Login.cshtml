@@ -1,0 +1,35 @@
+﻿@model LoginModel
+
+@{
+    ViewBag.Title = "Zaloguj się by zarządzać drużyną";
+    Layout = "_Layout";
+}
+
+
+<div class="text-center w-50" id="container">
+    <h2>Zaloguj się by zarządzać drużyną</h2>
+
+    <form asp-action="LoginConfirmed" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            
+            <label class="control-label">Nickname</label>
+            <input asp-for="Nickname" class="form-control"/>
+            <span asp-validation-for="Nickname" Title="text-danger"></span>
+            
+            <label asp-for="Password" class="control-label">Hasło</label>
+            <input asp-for="Password" class="form-control" type="password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+            
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Zaloguj się" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+<style>
+    #container {
+        margin: 0 auto;
+    }
+</style>

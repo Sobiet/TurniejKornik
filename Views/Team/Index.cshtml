@@ -1,0 +1,35 @@
+﻿@model Team
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="text-center">
+    
+    <h1>@Model.Name</h1>
+    <h5>#@Model.Tag</h5>
+
+    <table>
+        <tr>
+            <th>Imie</th> <th>Nazwisko</th> <th>Nickname</th> <th>Rola</th> <th>Klasa</th> <th>Lider</th>
+        </tr>
+        @foreach (var participant in Model.Participants)
+        {
+            <tr>
+                <td>@participant.Name</td>
+                <td>@participant.Surname</td>
+                <td>@participant.Nickname</td>
+                <td>@participant.Roles.ToString()</td>
+                <td>@participant.Class</td>
+                <td>@participant.Leader</td>
+            </tr>
+        }
+    </table>
+</div>
+
+<style>
+    table, td, th {
+        border: 1px solid black;
+    }
+</style>
