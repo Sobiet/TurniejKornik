@@ -17,8 +17,9 @@ public class TeamController : Controller
     }
 
     public IActionResult Index([FromQuery] Guid id)
-    {   
-        return View(_context.Teams.Include(x => x.Participants).FirstOrDefault(x => x.Id == id));
+    {
+        ViewData["Team"] = _context.Teams.Include(x => x.Participants).FirstOrDefault(x => x.Id == id);
+        return View();
     }
     
     [HttpGet("Login")]
@@ -52,6 +53,33 @@ public class TeamController : Controller
         }
 
         return RedirectToAction(nameof(Login));
+    }
+    
+    [HttpPost("Add")]
+    [ValidateAntiForgeryToken]
+    public IActionResult AddToTeam(AddParticipant participant)
+    {
+        var team = _context.Teams.Include(x => x.Participants).FirstOrDefault(x => x.Id == participant.TeamId);
+
+        if (team!.Participants.Count >= 5)
+        {
+            return RedirectToAction(nameof(Index), new {id = participant.TeamId});
+        }
+        
+        _context.Participants.Add(new Participant
+        {
+            Id = Guid.NewGuid(),
+            Name = participant.Name,
+            Surname = participant.Surname,
+            Nickname = participant.Nickname,
+            Roles = participant.Role,
+            Class = participant.Class,
+            Team = team
+        });
+
+        _context.SaveChanges();
+        
+        return RedirectToAction(nameof(Index), new {id = participant.TeamId});
     }
     
     private bool TryLogin(string nickname, string password)

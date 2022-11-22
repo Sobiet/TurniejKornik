@@ -1,20 +1,21 @@
-﻿@model Team
+﻿@model AddParticipant
 
 @{
-    ViewBag.Title = "title";
+    var team = ViewData["Team"] as Team ?? new Team { Name = null!, Tag = null! };
+    ViewBag.Title = team!.Name;
     Layout = "_Layout";
 }
 
 <div class="text-center">
     
-    <h1>@Model.Name</h1>
-    <h5>#@Model.Tag</h5>
+    <h1>@team.Name</h1>
+    <h5>#@team.Tag</h5>
 
     <table>
         <tr>
             <th>Imie</th> <th>Nazwisko</th> <th>Nickname</th> <th>Rola</th> <th>Klasa</th> <th>Lider</th>
         </tr>
-        @foreach (var participant in Model.Participants)
+        @foreach (var participant in team.Participants)
         {
             <tr>
                 <td>@participant.Name</td>
@@ -26,6 +27,44 @@
             </tr>
         }
     </table>
+    
+    <form asp-action="AddToTeam">
+        
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+
+            <label class="control-label">Imie</label>
+            <input asp-for="Name" class="form-control"/>
+            <span asp-validation-for="Name" Title="text-danger"></span>
+
+            <label class="control-label">Nazwisko</label>
+            <input asp-for="Surname" class="form-control"/>
+            <span asp-validation-for="Surname" Title="text-danger"></span>
+
+            <label class="control-label">Nickname</label>
+            <input asp-for="Nickname" class="form-control"/>
+            <span asp-validation-for="Nickname" Title="text-danger"></span>
+
+            <label class="control-label">Klasa</label>
+            <input asp-for="Class" class="form-control" placeholder="format: np. 4i1" maxlength="4"/>
+            <span asp-validation-for="Class" Title="text-danger"></span>
+            
+            <label class="control-label">Rola zakładającego zespół</label>
+            <select asp-for="Role">
+                <option>Top</option>
+                <option>Jg</option>
+                <option>Mid</option>
+                <option>Adc</option>
+                <option>Support</option>
+            </select>
+
+            <input asp-for="TeamId" value="@team.Id" hidden/>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Dodaj członka drużyny" class="btn btn-primary"/>
+        </div>
+    </form>
+    
 </div>
 
 <style>
