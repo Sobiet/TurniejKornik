@@ -1,6 +1,9 @@
-﻿using KornikTournament.Data;
+﻿using System.Security.Claims;
+using KornikTournament.Data;
 using KornikTournament.Helpers;
 using KornikTournament.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,6 +48,18 @@ public class TeamController : Controller
             {
                 return RedirectToAction(nameof(Login));
             }
+
+            var claims = new List<Claim>
+            {
+                new (ClaimTypes.Name, loginModel.Nickname),
+                new (ClaimTypes.Sid, participant.Id.ToString())
+            };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+            var props = new AuthenticationProperties();
+
+            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props).Wait();
             
             if (participant.Leader)
             {

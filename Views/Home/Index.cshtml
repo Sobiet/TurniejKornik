@@ -1,7 +1,26 @@
-﻿@model RegisterTeamModel
+﻿@using KornikTournament.Data
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model RegisterTeamModel
+@inject ApplicationContext context
 
 @{
     ViewData["Title"] = "Rejestracja Zespołu";
+}
+
+@{
+    var user = context.Participants.Include(x => x.Team).FirstOrDefault(x => x.Nickname == Context.User.Identity.Name);
+
+    if (user is null)
+    {
+        user = new Participant { Name = null!, Surname = null!, Nickname = null!, Class = null! };
+    }
+    
+    if (user.Team is not null)
+    {
+        <p>Już masz swoją drużynę. <a asp-controller="Team" asp-action="Index" asp-route-id="@user.Team.Id">Przejdź do zarządania</a></p>
+        return;
+    }
 }
 
 <div class="text-center w-50" id="container">

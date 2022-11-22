@@ -1,9 +1,27 @@
-﻿@model AddParticipant
+﻿@using KornikTournament.Data
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.EntityFrameworkCore
+@model AddParticipant
+@inject ApplicationContext context
 
 @{
     var team = ViewData["Team"] as Team ?? new Team { Name = null!, Tag = null! };
-    ViewBag.Title = team!.Name;
+    ViewBag.Title = team.Name;
     Layout = "_Layout";
+
+    var user = context.Participants.Include(x => x.Team).FirstOrDefault(x => x.Nickname == Context.User.Identity.Name);
+
+    if (user is null)
+    {
+        <p class="text-center">404. Nie masz dostępu do tych zasobów🤷‍♂</p>
+        return;
+    }
+}
+
+@if (!Context.User.Identity.IsAuthenticated || team.Id != user.Team.Id)
+{
+    <p class="text-center">404. Nie masz dostępu do tych zasobów🤷‍♂</p>
+    return;
 }
 
 <div class="text-center">
