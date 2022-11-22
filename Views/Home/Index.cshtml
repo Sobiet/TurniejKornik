@@ -56,21 +56,24 @@
             <input asp-for="LeaderClass" class="form-control" placeholder="format: np. 4i1" maxlength="4"/>
             <span asp-validation-for="LeaderClass" class="text-danger"></span>
             
-            <label class="control-label">Rola zakładającego zespół</label>
-            <select asp-for="Role">
-                <option>Top</option>
-                <option>Jg</option>
-                <option>Mid</option>
-                <option>Adc</option>
-                <option>Support</option>
-            </select>
+            <div class="lane-select">
+                <label class="control-label" id="lane-label">Rola zakładającego zespół</label>
+                <select asp-for="Role" id="lane">
+                    <option>Top</option>
+                    <option>Jg</option>
+                    <option>Mid</option>
+                    <option>Adc</option>
+                    <option>Support</option>
+                </select>
+            </div>
+
             
             <label class="control-label">Hasło zakładającego zespół (postaraj się nie zapomnieć)</label>
             <input asp-for="Password" class="form-control" type="password"/>
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <input type="submit" value="Załóż" class="btn btn-primary" />
+            <input type="submit" value="Załóż" class="btn btn-primary" id="signup-button"/>
         </div>
     </form>
 </div>
