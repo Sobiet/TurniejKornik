@@ -13,9 +13,9 @@
 
     <table>
         <tr>
-            <th>Imie</th> <th>Nazwisko</th> <th>Nickname</th> <th>Rola</th> <th>Klasa</th> <th>Lider</th>
+            <th>Imie</th> <th>Nazwisko</th> <th>Nickname</th> <th>Rola</th> <th>Klasa</th> <th>Usuń</th>
         </tr>
-        @foreach (var participant in team.Participants)
+        @foreach (var participant in team.Participants.OrderBy(x => x.Roles))
         {
             <tr>
                 <td>@participant.Name</td>
@@ -23,48 +23,58 @@
                 <td>@participant.Nickname</td>
                 <td>@participant.Roles.ToString()</td>
                 <td>@participant.Class</td>
-                <td>@participant.Leader</td>
+                <td>
+                    @using (Html.BeginForm("DeleteParticipant", "Team"))
+                    {
+                        <input type="hidden" name="id" value=@participant.Id />
+                        <input type="hidden" name="teamId" value=@team.Id />
+                        <input type="submit" value="Usuń" />
+                    }
+                </td>
             </tr>
         }
     </table>
     
-    <form asp-action="AddToTeam">
+    @if (team.Participants.Count < 5)
+    {
+        <form asp-action="AddToTeam">
         
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
 
-            <label class="control-label">Imie</label>
-            <input asp-for="Name" class="form-control"/>
-            <span asp-validation-for="Name" Title="text-danger"></span>
+                <label class="control-label">Imie</label>
+                <input asp-for="Name" class="form-control"/>
+                <span asp-validation-for="Name" Title="text-danger"></span>
 
-            <label class="control-label">Nazwisko</label>
-            <input asp-for="Surname" class="form-control"/>
-            <span asp-validation-for="Surname" Title="text-danger"></span>
+                <label class="control-label">Nazwisko</label>
+                <input asp-for="Surname" class="form-control"/>
+                <span asp-validation-for="Surname" Title="text-danger"></span>
 
-            <label class="control-label">Nickname</label>
-            <input asp-for="Nickname" class="form-control"/>
-            <span asp-validation-for="Nickname" Title="text-danger"></span>
+                <label class="control-label">Nickname</label>
+                <input asp-for="Nickname" class="form-control"/>
+                <span asp-validation-for="Nickname" Title="text-danger"></span>
 
-            <label class="control-label">Klasa</label>
-            <input asp-for="Class" class="form-control" placeholder="format: np. 4i1" maxlength="4"/>
-            <span asp-validation-for="Class" Title="text-danger"></span>
+                <label class="control-label">Klasa</label>
+                <input asp-for="Class" class="form-control" placeholder="format: np. 4i1" maxlength="4"/>
+                <span asp-validation-for="Class" Title="text-danger"></span>
             
-            <label class="control-label">Rola zakładającego zespół</label>
-            <select asp-for="Role">
-                <option>Top</option>
-                <option>Jg</option>
-                <option>Mid</option>
-                <option>Adc</option>
-                <option>Support</option>
-            </select>
+                <label class="control-label">Rola zakładającego zespół</label>
+                <select asp-for="Role">
+                    <option>Top</option>
+                    <option>Jg</option>
+                    <option>Mid</option>
+                    <option>Adc</option>
+                    <option>Support</option>
+                </select>
 
-            <input asp-for="TeamId" value="@team.Id" hidden/>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Dodaj członka drużyny" class="btn btn-primary"/>
-        </div>
-    </form>
-    
+                <input asp-for="TeamId" value="@team.Id" hidden/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Dodaj członka drużyny" class="btn btn-primary"/>
+            </div>
+        </form>
+    }
+
 </div>
 
 <style>

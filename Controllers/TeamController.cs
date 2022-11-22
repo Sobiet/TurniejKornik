@@ -82,6 +82,18 @@ public class TeamController : Controller
         return RedirectToAction(nameof(Index), new {id = participant.TeamId});
     }
     
+    [HttpPost("Delete")]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteParticipant(Guid id, Guid teamId)
+    {
+        var p = _context.Participants.FirstOrDefault(x => x.Id == id);
+        _context.Participants.Remove(p!);
+
+        _context.SaveChanges();
+        
+        return RedirectToAction(nameof(Index), new {id = teamId});
+    }
+    
     private bool TryLogin(string nickname, string password)
     {
         var participant = _context.Participants.SingleOrDefault(p => p.Nickname == nickname);
